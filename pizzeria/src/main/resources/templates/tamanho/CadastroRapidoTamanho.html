@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div class="modal fade" id="modalCadastroRapidoTamanho" tabindex="-1" role="dialog"  th:fragment="modal">
+		<div class="modal-dialog  modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Cadastro de tamanho</h4>
+				</div>
+				
+				<div class="modal-body">
+					<div class="alert  alert-danger  hidden  js-mensagem-cadastro-rapido-tamanho" role="alert"></div>
+					
+					<form class="form-horizontal" th:action="@{/tamanhos}">
+						<div class="form-group">
+							<label class="col-sm-4  control-label" for="nomeTamanho">Nome</label>
+							<div class="col-sm-8">
+								<input id="nomeTamanho" type="text" class="form-control">
+							</div>
+							
+							<label class="col-sm-4  control-label" for="quantidadePedaco">Pedaços</label>
+							<div class="col-sm-8">
+								<input id="quantidadePedaco" type="text" class="form-control">
+							</div>
+						</div>
+					</form>
+					
+					<button type="button" class="btn  btn-primary  js-modal-cadastro-tamanho-salvar-btn">Salvar</button>
+					<button type="button" class="btn  btn-default" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+.aw-layout-simple-page{
+	background-image: url("/pizzeria/images/body.png");
+	no-repeat center center fixed;
+	background-size: cover; /*Css padrão*/
+  	-webkit-background-size: cover; /*Css safari e chrome*/
+  	-moz-background-size: cover; /*Css firefox*/
+  	-ms-background-size: cover; /*Css IE não use mer#^@%#*/
+  	-o-background-size: cover; /*Css Opera*/
+}
+
+.aw-btn-full-width{
+	width:100%;
+	color: #fff;
+	background-color: rgba(170, 41, 28, 0.75);;
+	border-color: #98542c;
+}
+.aw-btn-full-width:hover{
+	width:100%;
+	color: #fff;
+	background-color: rgba(170, 41, 28, 0.75);;
+	border-color: #98542c;
+}
+
+.btn-primary.active, .btn-primary:active, .btn-primary:hover, .open>.dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #7d3a39;
+    border-color: #7d3a39;
+}

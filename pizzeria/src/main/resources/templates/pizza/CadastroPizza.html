@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:spg="http://dialetocustomizado.com.br">
+
+<head>
+	<title>Cadastro de pizza</title>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/upload.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>	
+</head>
+<body>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${pizza.nova}">Cadastro de pizza</h1>
+					<h1 th:unless="${pizza.nova}">Edição de pizza</h1>
+				</div>
+				
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/pizzas}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${pizza}" 
+		      th:action="${pizza.nova} ? @{/pizzas/nova} : @{/pizzas/{codigo}(codigo=${pizza.codigo})}">
+			<spg:message/>
+			
+			<input type="hidden" th:field="*{codigo}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-8  bw-required" spg:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
+					<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
+				</div>
+				
+				<div class="col-sm-3  form-group  bw-required" spg:classforerror="preco">
+					<label for="preco" class="control-label">Valor</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input id="preco" type="text" class="form-control  js-decimal" th:field="*{preco}"/>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-3  form-group  bw-required" spg:classforerror="sabor">
+					<label for="sabor" class="control-label">Sabor</label>
+					<select id="sabor" class="form-control" th:field="*{sabor}">
+						<option value="">Selecione o sabor</option>
+						<option th:each="sabor : ${sabores}" th:value="${sabor}" th:text="${sabor.descricao}">Adocicada</option>
+					</select>
+				</div>
+				
+				<div class="col-sm-3  form-group  bw-required" spg:classforerror="tamanho">
+					<label for="estilo" class="control-label">Tamanho</label>
+					<div class="bw-field-action">
+						<select id="tamanho" class="form-control" th:field="*{tamanho}">
+							<option value="">Selecione o tamanho</option>
+							<option th:each="tamanho : ${tamanhos}" th:value="${tamanho.codigo}" th:text="${tamanho.nome}">Pale lager</option>
+						</select>
+						
+						<div class="bw-field-action__icon">
+							<a href="#" data-toggle="modal" data-target="#modalCadastroRapidoTamanho">
+								<i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+							</a>
+						</div> 
+					</div>
+				</div>
+				
+				<div class="form-group  col-sm-3">
+					<label class="control-label">Promoção</label>
+					<div>
+						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
+							data-on-text="Sim" data-off-text="Não" th:field="*{promocao}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-3  form-group  bw-required" spg:classforerror="tempo">
+					<label for="tempo" class="control-label">Tempo</label>
+					<div class="input-group">
+						<input type="text" class="form-control  js-hour" id="tempo" th:field="*{tempo}"/>
+					</div>
+				</div>
+				
+				<div class="form-group  col-sm-12">
+					<textarea class="form-control" id="ingredientes" rows="5"
+					placeholder="Ingredientes"
+					th:field="*{ingredientes}"></textarea>
+				</div>
+				
+			</div>
+			
+			<div class="row" >
+				<div class="form-group  col-sm-10">
+					<input type="hidden" th:field="*{foto}" id="foto">
+					<input type="hidden" th:field="*{contentType}" id="contentType">
+					<input type="hidden" th:field="*{novaFoto}" id="novaFoto">
+				
+					<label class="control-label">Foto</label>
+					
+					
+				</div>
+			</div>
+			
+			<div class="row">			
+				<div class="js-container-foto-cerveja" th:attr="data-url-fotos=@{/fotos}">
+						<div id="upload-drop" class="bw-upload">
+							<i class="glyphicon  glyphicon-cloud-upload"></i>
+							<span>Arraste a foto aqui ou </span>
+							<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png"/></a>
+						</div>
+				</div>
+			</div>
+			
+			<button type="submit" class="btn  btn-primary">Salvar</button>
+		</form>
+	</div>
+	
+		<div th:replace="tamanho/CadastroRapidoTamanho :: modal"></div>
+		<th:block th:replace="hbs/FotoCerveja"></th:block>
+	
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/tamanho.cadastro-rapido.js}"></script>
+
+	<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/upload.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/bebida.upload-foto.js}"></script>
+	
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/bootstrap-timepicker.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+		
+		/* $('#tempo').timepicker({
+            minuteStep: 2,
+            template: 'modal',
+            appendWidgetTo: 'body',
+            showSeconds: true,
+            showMeridian: false,
+            defaultTime: false
+        });	 */
+	</script>
+</th:block>
+</body>
+</html>

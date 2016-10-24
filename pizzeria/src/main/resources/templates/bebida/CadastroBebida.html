@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:spg="http://dialetocustomizado.com.br">
+
+<head>
+	<title>Cadastro de bebida</title>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/upload.min.css}"/>
+	
+</head>
+<body>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${bebida.nova}">Cadastro de bebida</h1>
+					<h1 th:unless="${bebida.nova}">Edição de bebida</h1>
+				</div>
+				
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/bebidas}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${bebida}" 
+		      th:action="${bebida.nova} ? @{/bebidas/nova} : @{/bebidas/{codigo}(codigo=${bebida.codigo})}">
+			<spg:message/>
+			
+			<input type="hidden" th:field="*{codigo}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-8  bw-required" spg:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
+					<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
+				</div>
+				
+				<div class="col-sm-3  form-group  bw-required" spg:classforerror="preco">
+					<label for="preco" class="control-label">Valor</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input id="preco" type="text" class="form-control  js-decimal" th:field="*{preco}"/>
+					</div>
+				</div>
+				
+				<div class="col-sm-3  form-group  bw-required" spg:classforerror="estoque">
+					<label for="estoque" class="control-label">Estoque</label>
+					<input id="estoque" type="text" class="form-control  js-plain" th:field="*{estoque}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-12">
+					<input type="hidden" th:field="*{foto}" id="foto">
+					<input type="hidden" th:field="*{contentType}" id="contentType">
+					<input type="hidden" th:field="*{novaFoto}" id="novaFoto">
+				
+					<label class="control-label">Foto</label>
+					
+					<div class="js-container-foto-cerveja" th:attr="data-url-fotos=@{/fotos}">
+						<div id="upload-drop" class="bw-upload">
+							<i class="glyphicon  glyphicon-cloud-upload"></i>
+							<span>Arraste a foto aqui ou </span>
+							<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png"/></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<button type="submit" class="btn  btn-primary">Salvar</button>
+		</form>
+	</div>
+	<th:block th:replace="hbs/FotoCerveja"></th:block>
+	
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/upload.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/bebida.upload-foto.js}"></script>
+</th:block>
+</body>
+</html>
